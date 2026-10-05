@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My College Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b1020;--bg2:#10172b;--card:#141c33;--line:#243049;--text:#eef1f8;--muted:#9aa6c2;--accent:#6ee7c8;--accent-ink:#06261f;--danger:#f87171;--ease:cubic-bezier(.22,.8,.3,1)}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:200}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(11,16,32,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:1rem 2rem}
+nav ul{list-style:none;display:flex;gap:2rem;max-width:1200px;margin:0 auto;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;padding-bottom:4px;background:linear-gradient(var(--accent),var(--accent)) 0 100%/0 2px no-repeat;transition:color .3s,background-size .35s var(--ease)}
+nav a:hover,nav a.active{color:var(--text);background-size:100% 2px}
+
+.hero{min-height:calc(100vh - 62px);display:flex;align-items:center;justify-content:center;padding:3rem 2rem;position:relative;overflow:hidden;max-width:none}
+.hero::before{content:'';position:absolute;inset:-20%;background:radial-gradient(40% 40% at 70% 30%,rgba(110,231,200,.10),transparent),radial-gradient(35% 35% at 25% 75%,rgba(99,102,241,.12),transparent);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(-3%,2%,0) scale(1.06)}}
+.hero-content{position:relative;max-width:760px;text-align:center}
+.hero-content>*{opacity:0;transform:translateY(18px);animation:rise .8s var(--ease) forwards}
+.hero-content>:nth-child(1){animation-delay:.1s}.hero-content>:nth-child(2){animation-delay:.25s}.hero-content>:nth-child(3){animation-delay:.4s}.hero-content>:nth-child(4){animation-delay:.55s}.hero-content>:nth-child(5){animation-delay:.7s}.hero-content>:nth-child(6){animation-delay:.85s}
+@keyframes rise{to{opacity:1;transform:none}}
+.profile-pic-container{position:relative;width:160px;height:160px;margin:0 auto 2rem;border-radius:50%;border:2px solid var(--accent);padding:5px}
+.profile-pic-container::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid var(--accent);opacity:0;animation:ring 3.2s ease-out 1.2s infinite}
+@keyframes ring{0%{transform:scale(.92);opacity:.5}100%{transform:scale(1.15);opacity:0}}
+.profile-pic,.profile-pic-placeholder{width:100%;height:100%;border-radius:50%;object-fit:cover;background:var(--card)}
+.profile-pic-placeholder{display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:2.6rem;color:var(--accent)}
+.upload-pic-label{position:absolute;right:-6px;bottom:6px;padding:.3rem .8rem;background:var(--accent);color:var(--accent-ink);border-radius:20px;font-size:.75rem;font-weight:700;cursor:pointer;transition:transform .25s var(--ease)}
+.upload-pic-label:hover{transform:scale(1.08)}
+#profilePicInput{display:none}
+.hero-badge{display:inline-block;padding:.45rem 1.2rem;border:1px solid var(--line);border-radius:50px;color:var(--accent);font-size:.85rem;font-weight:600;margin-bottom:1.5rem;background:rgba(110,231,200,.06)}
+.hero-content h1{font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.08;margin-bottom:.6rem}
+.hero-subtitle{font-size:1.15rem;color:var(--accent);margin-bottom:1rem;font-weight:500}
+.hero-content p{color:var(--muted);font-size:1.05rem;max-width:580px;margin:0 auto 2.2rem}
+[title="Click to edit"]{cursor:text;transition:background .25s}
+[title="Click to edit"]:hover{background:rgba(255,255,255,.04)}
+
+.btn,.cta-button{display:inline-block;padding:.85rem 2rem;border-radius:8px;font:600 .95rem 'Manrope',sans-serif;cursor:pointer;border:1px solid var(--accent);text-decoration:none;margin:.4rem;transition:transform .3s var(--ease),box-shadow .3s,background .3s,color .3s}
+.cta-button{background:var(--accent);color:var(--accent-ink)}
+.cta-button:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(110,231,200,.25)}
+.cta-button.ghost{background:transparent;color:var(--accent)}
+.cta-button.ghost:hover{background:rgba(110,231,200,.1)}
+.add-btn{padding:.6rem 1.2rem;background:transparent;color:var(--accent);border:1px dashed var(--accent);border-radius:8px;font:600 .9rem 'Manrope',sans-serif;cursor:pointer;margin-bottom:2rem;transition:background .3s,transform .3s var(--ease)}
+.add-btn:hover{background:rgba(110,231,200,.1);transform:translateY(-2px)}
+.delete-btn{padding:.4rem .9rem;background:transparent;color:var(--danger);border:1px solid rgba(248,113,113,.4);border-radius:6px;font:600 .8rem 'Manrope',sans-serif;cursor:pointer;margin-top:1rem;transition:background .25s}
+.delete-btn:hover{background:rgba(248,113,113,.12)}
+
+section{padding:6rem 2rem;max-width:1200px;margin:0 auto}
+section h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:.6rem}
+.section-subtitle{color:var(--muted);margin-bottom:1.5rem;max-width:600px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+.about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;margin-top:2rem}
+.about-bio{display:flex;flex-direction:column;gap:1.2rem}
+.about-text{background:var(--card);padding:1.5rem;border-radius:12px;border:1px solid var(--line);color:var(--muted);transition:border-color .3s}
+.about-text:hover{border-color:var(--accent)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-content:start}
+.info-card{background:var(--card);padding:1.4rem;border-radius:12px;border:1px solid var(--line);transition:transform .35s var(--ease),border-color .3s}
+.info-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.info-label{font-size:.82rem;color:var(--muted);margin-bottom:.3rem}
+.info-value{font-size:1.2rem;font-weight:700;color:var(--accent)}
+
+.courses-grid,.activities-grid,.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.6rem}
+.course-card,.activity-card,.project-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.8rem;position:relative;overflow:hidden;transition:transform .4s var(--ease),border-color .3s,box-shadow .4s;animation:pop .6s var(--ease) both}
+.course-card::before,.activity-card::before,.project-card::before{content:'';position:absolute;left:0;top:0;height:3px;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.course-card:hover,.activity-card:hover,.project-card:hover{transform:translateY(-6px);border-color:rgba(110,231,200,.5);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.course-card:hover::before,.activity-card:hover::before,.project-card:hover::before{transform:scaleX(1)}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}}
+.course-code{font-size:.8rem;color:var(--accent);font-weight:700;letter-spacing:.06em;margin-bottom:.4rem}
+.course-card h3,.activity-card h3,.project-card h3{font-size:1.35rem;margin-bottom:.5rem}
+.course-semester{color:var(--muted);font-size:.88rem;margin-bottom:.8rem}
+.course-desc,.activity-desc,.project-desc{color:var(--muted);font-size:.95rem;margin-bottom:1rem}
+.course-grade{display:inline-block;padding:.3rem .9rem;border:1px solid var(--accent);color:var(--accent);border-radius:20px;font-size:.85rem;font-weight:600}
+.activity-role{color:var(--accent);font-weight:600;font-size:.95rem;margin-bottom:.8rem}
+.tag{display:inline-block;padding:.3rem .8rem;background:rgba(255,255,255,.05);color:var(--text);border-radius:20px;font-size:.8rem;margin:.2rem .3rem .2rem 0}
+
+.skills-container{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.5rem}
+.skill-category{background:var(--card);padding:2rem;border-radius:14px;border:1px solid var(--line)}
+.skill-category h3{font-size:1.3rem;margin-bottom:1.2rem}
+.skill-category .add-btn{margin-bottom:1.2rem}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.7rem}
+.skill-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;border:1px solid var(--line);border-radius:25px;font-size:.9rem;font-weight:500;animation:pop .5s var(--ease) both;transition:border-color .3s,background .3s,transform .3s var(--ease)}
+.skill-tag:hover{border-color:var(--accent);background:rgba(110,231,200,.08);transform:translateY(-2px)}
+.skill-tag .x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;width:0;overflow:hidden;transition:width .25s,color .2s}
+.skill-tag:hover .x,.skill-tag .x:focus-visible{width:.8rem}
+.skill-tag .x:hover{color:var(--danger)}
+
+.interests-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.4rem}
+.interest-item{background:var(--card);padding:1.6rem;border-radius:14px;border:1px solid var(--line);animation:pop .6s var(--ease) both;transition:transform .35s var(--ease),border-color .3s}
+.interest-item:hover{transform:translateY(-4px);border-color:var(--accent)}
+.interest-item h3{font-size:1.1rem}
+
+.achievements-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.6rem}
+.achievement-item{background:var(--card);padding:1.8rem;border-radius:14px;border-left:3px solid var(--accent);animation:pop .6s var(--ease) both;transition:transform .35s var(--ease)}
+.achievement-item:hover{transform:translateX(6px)}
+.achievement-item h3{font-size:1.2rem;margin-bottom:.4rem}
+.achievement-item p{color:var(--muted);font-size:.95rem}
+
+#contact{text-align:center}
+#contact .section-subtitle{margin-inline:auto}
+.contact-form{max-width:500px;margin:2rem auto}
+.contact-form input,.contact-form textarea,.modal-content input,.modal-content textarea{width:100%;padding:.9rem 1rem;margin-bottom:1rem;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;font:inherit;transition:border-color .3s,box-shadow .3s}
+.contact-form input:focus,.contact-form textarea:focus,.modal-content input:focus,.modal-content textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(110,231,200,.15)}
+.social-links{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.social-links a{padding:.55rem 1.3rem;border:1px solid var(--line);border-radius:30px;color:var(--text);text-decoration:none;font-size:.9rem;font-weight:500;transition:all .3s var(--ease)}
+.social-links a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal.active{opacity:1;visibility:visible}
+.modal-content{background:var(--card);padding:2rem;border-radius:14px;border:1px solid var(--line);max-width:560px;width:90%;max-height:85vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:transform .4s var(--ease)}
+.modal.active .modal-content{transform:none}
+.modal-content h3{margin-bottom:1rem;font-size:1.5rem}
+.modal-content label{display:block;color:var(--muted);font-size:.88rem;font-weight:500;margin-bottom:.4rem}
+.modal-buttons{display:flex;gap:1rem;margin-top:.5rem}
+.modal-buttons button{flex:1;padding:.8rem;border-radius:8px;font:600 .95rem 'Manrope',sans-serif;cursor:pointer;border:1px solid transparent;transition:transform .25s var(--ease)}
+.modal-buttons button:hover{transform:translateY(-2px)}
+.confirm-btn{background:var(--accent);color:var(--accent-ink)}
+.cancel-btn{background:transparent;color:var(--muted);border-color:var(--line)!important}
+footer{background:var(--bg2);border-top:1px solid var(--line);padding:2rem;text-align:center;color:var(--muted);font-size:.9rem}
+
+@media(max-width:768px){nav ul{gap:1rem}.about-grid,.info-grid,.skills-container{grid-template-columns:1fr}section{padding:4rem 1.5rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.hero-content>*,.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav><ul>
+<li><a href="#home">Home</a></li><li><a href="#about">About</a></li><li><a href="#courses">Courses</a></li><li><a href="#activities">Activities</a></li><li><a href="#projects">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#interests">Interests</a></li><li><a href="#achievements">Achievements</a></li><li><a href="#contact">Contact</a></li>
+</ul></nav>
+
+<section class="hero" id="home">
+<div class="hero-content">
+<div class="profile-pic-container">
+<div id="profilePicDisplay" class="profile-pic-placeholder">YN</div>
+<img id="profilePicImg" class="profile-pic" alt="Profile photo" style="display:none">
+<label for="profilePicInput" class="upload-pic-label">Upload</label>
+<input type="file" id="profilePicInput" accept="image/*">
+</div>
+<div class="hero-badge" id="collegeBadge" title="Click to edit">Student @ Your University</div>
+<h1 id="heroName" title="Click to edit">Your Name</h1>
+<div class="hero-subtitle" id="heroDegree" title="Click to edit">Computer Science | Class of 2026</div>
+<p id="heroTagline" title="Click to edit">Passionate learner, creative thinker, and aspiring innovator.</p>
+<div>
+<button class="cta-button" onclick="go('about')">About me</button>
+<button class="cta-button ghost" onclick="go('projects')">View projects</button>
+</div>
+</div>
+</section>
+
+<section id="about" class="reveal">
+<h2>About me</h2>
+<div class="about-grid">
+<div class="about-bio">
+<div class="about-text" id="aboutText1" title="Click to edit"></div>
+<div class="about-text" id="aboutText2" title="Click to edit"></div>
+</div>
+<div class="info-grid">
+<div class="info-card"><div class="info-label">University</div><div class="info-value" id="university" title="Click to edit"></div></div>
+<div class="info-card"><div class="info-label">Major</div><div class="info-value" id="major" title="Click to edit"></div></div>
+<div class="info-card"><div class="info-label">GPA</div><div class="info-value" id="gpa" title="Click to edit"></div></div>
+<div class="info-card"><div class="info-label">Year</div><div class="info-value" id="year" title="Click to edit"></div></div>
+</div>
+</div>
+</section>
+
+<section id="courses" class="reveal">
+<h2>Academic courses</h2>
+<p class="section-subtitle">Relevant coursework and subjects.</p>
+<button class="add-btn" onclick="openModal('addCourseModal')">+ Add course</button>
+<div class="courses-grid" id="coursesGrid"></div>
+</section>
+
+<section id="activities" class="reveal">
+<h2>Extracurricular activities</h2>
+<p class="section-subtitle">Clubs, organizations, and activities.</p>
+<button class="add-btn" onclick="openModal('addActivityModal')">+ Add activity</button>
+<div class="activities-grid" id="activitiesGrid"></div>
+</section>
+
+<section id="projects" class="reveal">
+<h2>Projects and assignments</h2>
+<p class="section-subtitle">Academic and personal work.</p>
+<button class="add-btn" onclick="openModal('addProjectModal')">+ Add project</button>
+<div class="projects-grid" id="projectsGrid"></div>
+</section>
+
+<section id="skills" class="reveal">
+<h2>Skills and expertise</h2>
+<div class="skills-container">
+<div class="skill-category"><h3>Technical skills</h3><button class="add-btn" onclick="openSkillModal('technical')">+ Add skill</button><div class="skill-tags" id="technicalSkills"></div></div>
+<div class="skill-category"><h3>Soft skills</h3><button class="add-btn" onclick="openSkillModal('soft')">+ Add skill</button><div class="skill-tags" id="softSkills"></div></div>
+</div>
+</section>
+
+<section id="interests" class="reveal">
+<h2>Hobbies and interests</h2>
+<p class="section-subtitle">What I enjoy beyond the classroom.</p>
+<button class="add-btn" onclick="openModal('addInterestModal')">+ Add interest</button>
+<div class="interests-grid" id="interestsGrid"></div>
+</section>
+
+<section id="achievements" class="reveal">
+<h2>Achievements and awards</h2>
+<button class="add-btn" onclick="openModal('addAchievementModal')">+ Add achievement</button>
+<div class="achievements-list" id="achievementsGrid"></div>
+</section>
+
+<section id="contact" class="reveal">
+<h2>Get in touch</h2>
+<p class="section-subtitle">Questions, collaborations, or opportunities are welcome.</p>
+<form class="contact-form" id="contactForm">
+<input type="text" id="cName" placeholder="Your name" required>
+<input type="email" id="cEmail" placeholder="Your email" required>
+<textarea id="cMsg" placeholder="Your message" rows="5" required></textarea>
+<button class="cta-button" type="submit">Send message</button>
+</form>
+<div class="social-links">
+<a href="https://instagram.com">Instagram</a><a href="https://linkedin.com">LinkedIn</a><a href="https://github.com">GitHub</a><a href="mailto:your@email.com">Email</a>
+</div>
+</section>
+
+<footer><p>&copy; 2026 My Portfolio</p></footer>
+
+<div id="addCourseModal" class="modal"><div class="modal-content"><h3>Add course</h3>
+<label>Course code</label><input id="courseCode" placeholder="e.g., CS201">
+<label>Course title</label><input id="courseTitle" placeholder="e.g., Data Structures">
+<label>Semester</label><input id="courseSemester" placeholder="e.g., Fall 2025">
+<label>Description</label><textarea id="courseDesc" placeholder="What did you learn?"></textarea>
+<label>Grade</label><input id="courseGrade" placeholder="e.g., A+">
+<div class="modal-buttons"><button class="confirm-btn" onclick="addCourse()">Add course</button><button class="cancel-btn" onclick="closeModal('addCourseModal')">Cancel</button></div></div></div>
+
+<div id="addActivityModal" class="modal"><div class="modal-content"><h3>Add activity</h3>
+<label>Activity name</label><input id="activityName" placeholder="e.g., Coding Club">
+<label>Your role</label><input id="activityRole" placeholder="e.g., Vice President">
+<label>Description</label><textarea id="activityDesc" placeholder="What do you do in this activity?"></textarea>
+<div class="modal-buttons"><button class="confirm-btn" onclick="addActivity()">Add activity</button><button class="cancel-btn" onclick="closeModal('addActivityModal')">Cancel</button></div></div></div>
+
+<div id="addProjectModal" class="modal"><div class="modal-content"><h3>Add project</h3>
+<label>Project title</label><input id="projectTitle" placeholder="e.g., E-Learning Platform">
+<label>Description</label><textarea id="projectDesc" placeholder="What is this project about?"></textarea>
+<label>Technologies (comma separated)</label><input id="projectTags" placeholder="e.g., React, Node.js">
+<div class="modal-buttons"><button class="confirm-btn" onclick="addProject()">Add project</button><button class="cancel-btn" onclick="closeModal('addProjectModal')">Cancel</button></div></div></div>
+
+<div id="addSkillModal" class="modal"><div class="modal-content"><h3 id="skillModalTitle">Add technical skill</h3>
+<label>Skill name</label><input id="skillName" placeholder="e.g., Python, Leadership">
+<div class="modal-buttons"><button class="confirm-btn" onclick="addSkill()">Add skill</button><button class="cancel-btn" onclick="closeModal('addSkillModal')">Cancel</button></div></div></div>
+
+<div id="addInterestModal" class="modal"><div class="modal-content"><h3>Add interest</h3>
+<label>Interest name</label><input id="interestName" placeholder="e.g., Reading">
+<div class="modal-buttons"><button class="confirm-btn" onclick="addInterest()">Add interest</button><button class="cancel-btn" onclick="closeModal('addInterestModal')">Cancel</button></div></div></div>
+
+<div id="addAchievementModal" class="modal"><div class="modal-content"><h3>Add achievement</h3>
+<label>Title</label><input id="achievementTitle" placeholder="e.g., Dean's List">
+<label>Description</label><textarea id="achievementDesc" placeholder="Tell us about this achievement"></textarea>
+<div class="modal-buttons"><button class="confirm-btn" onclick="addAchievement()">Add achievement</button><button class="cancel-btn" onclick="closeModal('addAchievementModal')">Cancel</button></div></div></div>
+
+<script>
+const defaultData={
+heroName:'Your Name',heroDegree:'Computer Science | Class of 2026',
+heroTagline:'Passionate learner, creative thinker, and aspiring innovator.',
+collegeBadge:'Student @ Your University',profilePic:null,
+aboutText1:"I'm a student exploring the intersection of technology and creativity. I take part in clubs and projects alongside my degree, and I believe in continuous learning.",
+aboutText2:"Beyond academics, I'm interested in real-world problems and enjoy collaborating with others. I look for opportunities to grow through internships, competitions, and personal projects.",
+university:'Your University',major:'Computer Science',gpa:'3.8',year:'Second Year',
+courses:[{id:1,code:'CS201',title:'Data Structures & Algorithms',semester:'Fall 2025',description:'Arrays, linked lists, trees, graphs, and sorting algorithms.',grade:'A+'},{id:2,code:'CS301',title:'Web Development',semester:'Spring 2026',description:'Responsive websites using HTML, CSS, JavaScript, React, and Node.js.',grade:'A'}],
+activities:[{id:1,name:'Coding Club',role:'Vice President',description:'Leading workshops on web development and competitive programming.'},{id:2,name:'Design Club',role:'Member',description:'UI/UX design and brand identity work.'}],
+projects:[{id:1,title:'E-Learning Platform',description:'Full-stack web application for online courses with video streaming, quizzes, and progress tracking.',tags:['React','Node.js','MongoDB']}],
+technicalSkills:['JavaScript','React','Node.js','Python','MongoDB'],
+softSkills:['Problem Solving','Communication','Teamwork','Leadership'],
+interests:[{name:'Gaming'},{name:'Reading'}],
+achievements:[{id:1,title:"Dean's List",description:'Recognized for academic excellence, Fall 2025.'}]
+};
+function loadData(){try{const s=localStorage.getItem('collegePortfolioData');return s?Object.assign({},defaultData,JSON.parse(s)):defaultData}catch(e){return defaultData}}
+function saveData(){try{localStorage.setItem('collegePortfolioData',JSON.stringify(D))}catch(e){}}
+let D=loadData(),skillType='technical';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const stagger=i=>`style="animation-delay:${Math.min(i,8)*70}ms"`;
+function go(id){$(id).scrollIntoView({behavior:'smooth'})}
+
+function renderHero(){['heroName','heroDegree','heroTagline','collegeBadge'].forEach(k=>$(k).textContent=D[k]);
+$('profilePicDisplay').textContent=D.heroName.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase()||'YN'}
+function renderAbout(){['aboutText1','aboutText2','university','major','gpa','year'].forEach(k=>$(k).textContent=D[k])}
+function renderCourses(){$('coursesGrid').innerHTML=D.courses.map((c,i)=>`<div class="course-card" ${stagger(i)}><div class="course-code">${esc(c.code)}</div><h3>${esc(c.title)}</h3><div class="course-semester">${esc(c.semester)}</div><p class="course-desc">${esc(c.description)}</p><span class="course-grade">Grade: ${esc(c.grade)}</span><div><button class="delete-btn" onclick="del('courses',${c.id},'course')">Delete</button></div></div>`).join('')}
+function renderActivities(){$('activitiesGrid').innerHTML=D.activities.map((a,i)=>`<div class="activity-card" ${stagger(i)}><h3>${esc(a.name)}</h3><div class="activity-role">${esc(a.role)}</div><p class="activity-desc">${esc(a.description)}</p><button class="delete-btn" onclick="del('activities',${a.id},'activity')">Delete</button></div>`).join('')}
+function renderProjects(){$('projectsGrid').innerHTML=D.projects.map((p,i)=>`<div class="project-card" ${stagger(i)}><h3>${esc(p.title)}</h3><p class="project-desc">${esc(p.description)}</p><div>${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div><button class="delete-btn" onclick="del('projects',${p.id},'project')">Delete</button></div>`).join('')}
+function renderSkills(){[['technical','technicalSkills'],['soft','softSkills']].forEach(([t,k])=>{$(k).innerHTML=D[k].map((s,i)=>`<span class="skill-tag" ${stagger(i)}>${esc(s)}<button class="x" aria-label="Remove ${esc(s)}" onclick="delSkill('${k}',${i})">&times;</button></span>`).join('')})}
+function renderInterests(){$('interestsGrid').innerHTML=D.interests.map((x,i)=>`<div class="interest-item" ${stagger(i)}><h3>${esc(x.name)}</h3><button class="delete-btn" onclick="delInterest(${i})">Delete</button></div>`).join('')}
+function renderAchievements(){$('achievementsGrid').innerHTML=D.achievements.map((a,i)=>`<div class="achievement-item" ${stagger(i)}><h3>${esc(a.title)}</h3><p>${esc(a.description)}</p><button class="delete-btn" onclick="del('achievements',${a.id},'achievement')">Delete</button></div>`).join('')}
+const renderers={courses:renderCourses,activities:renderActivities,projects:renderProjects,achievements:renderAchievements};
+
+['heroName','heroDegree','heroTagline','collegeBadge','aboutText1','aboutText2','university','major','gpa','year'].forEach(k=>{
+$(k).addEventListener('click',()=>{const v=prompt('Edit '+k+':',D[k]);if(v!==null&&v.trim()){D[k]=v;saveData();renderHero();renderAbout()}})});
+
+$('profilePicInput').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{D.profilePic=ev.target.result;saveData();showPic()};r.readAsDataURL(f)});
+function showPic(){const has=!!D.profilePic;$('profilePicDisplay').style.display=has?'none':'flex';$('profilePicImg').style.display=has?'block':'none';if(has)$('profilePicImg').src=D.profilePic}
+
+function openModal(id){$(id).classList.add('active')}
+function closeModal(id){$(id).classList.remove('active')}
+function openSkillModal(t){skillType=t;$('skillModalTitle').textContent=t==='technical'?'Add technical skill':'Add soft skill';openModal('addSkillModal')}
+window.addEventListener('click',e=>{if(e.target.classList.contains('modal'))e.target.classList.remove('active')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.active').forEach(m=>m.classList.remove('active'))});
+const val=id=>$(id).value.trim(),clear=(...ids)=>ids.forEach(i=>$(i).value='');
+function del(list,id,label){if(confirm('Delete this '+label+'?')){D[list]=D[list].filter(x=>x.id!==id);saveData();renderers[list]()}}
+
+function addCourse(){const c={id:Date.now(),code:val('courseCode'),title:val('courseTitle'),semester:val('courseSemester'),description:val('courseDesc'),grade:val('courseGrade')};
+if(Object.values(c).every(Boolean)){D.courses.push(c);saveData();renderCourses();closeModal('addCourseModal');clear('courseCode','courseTitle','courseSemester','courseDesc','courseGrade')}else alert('Please fill all fields')}
+function addActivity(){const a={id:Date.now(),name:val('activityName'),role:val('activityRole'),description:val('activityDesc')};
+if(Object.values(a).every(Boolean)){D.activities.push(a);saveData();renderActivities();closeModal('addActivityModal');clear('activityName','activityRole','activityDesc')}else alert('Please fill all fields')}
+function addProject(){const tags=val('projectTags').split(',').map(t=>t.trim()).filter(Boolean);const p={id:Date.now(),title:val('projectTitle'),description:val('projectDesc'),tags};
+if(p.title&&p.description&&tags.length){D.projects.push(p);saveData();renderProjects();closeModal('addProjectModal');clear('projectTitle','projectDesc','projectTags')}else alert('Please fill all fields')}
+function addSkill(){const s=val('skillName');if(!s)return alert('Please enter a skill name');D[skillType==='technical'?'technicalSkills':'softSkills'].push(s);saveData();renderSkills();closeModal('addSkillModal');clear('skillName')}
+function delSkill(k,i){D[k].splice(i,1);saveData();renderSkills()}
+function addInterest(){const n=val('interestName');if(!n)return alert('Please enter an interest');D.interests.push({name:n});saveData();renderInterests();closeModal('addInterestModal');clear('interestName')}
+function delInterest(i){if(confirm('Delete this interest?')){D.interests.splice(i,1);saveData();renderInterests()}}
+function addAchievement(){const a={id:Date.now(),title:val('achievementTitle'),description:val('achievementDesc')};
+if(a.title&&a.description){D.achievements.push(a);saveData();renderAchievements();closeModal('addAchievementModal');clear('achievementTitle','achievementDesc')}else alert('Please fill all fields')}
+
+$('contactForm').addEventListener('submit',e=>{e.preventDefault();
+location.href='mailto:your@email.com?subject='+encodeURIComponent('Portfolio message from '+val('cName'))+'&body='+encodeURIComponent(val('cMsg')+'\n\n'+val('cEmail'))});
+
+// Scroll reveal, active nav link, progress bar
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const links=[...document.querySelectorAll('nav a')];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>spy.observe(s));
+addEventListener('scroll',()=>{const h=document.documentElement;$('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+
+renderHero();renderAbout();renderCourses();renderActivities();renderProjects();renderSkills();renderInterests();renderAchievements();showPic();
+</script>
+</body>
+</html>
